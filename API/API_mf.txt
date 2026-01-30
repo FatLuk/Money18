@@ -1,0 +1,45 @@
+export default {
+  async fetch(request) {
+    // 目標 API
+    const urls = [
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/0388",
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/9988",
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/2318",
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/2628",
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/1810",
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/HSI"
+    ];
+
+    try {
+      // 並行請求三個 API
+      const responses = await Promise.all(urls.map(url => fetch(url)));
+
+      // 取回 JSON 內容
+      const data = await Promise.all(responses.map(res => res.json()));
+
+      // 合併結果
+      const result = {
+        API_0388: data[0],
+        API_9988: data[1],
+        API_2318: data[2],
+        API_2628: data[3],
+        API_1810: data[4],
+        API_HSI: data[5]
+      };
+
+      // 回傳給前端，並加上 CORS header
+      return new Response(JSON.stringify(result), {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",   // 允許跨域
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+        },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  },
+};

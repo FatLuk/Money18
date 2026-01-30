@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>P2POS's Web-based Management System</title>
+  <style>
+body {
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, "Microsoft JhengHei", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.banner {
+  width: 100%;
+  background: #1f2937;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid #374151;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+.card {
+  flex: 1 1 100%;
+  width: 100%;
+  max-width: 560px;   /* 桌機最大寬度 */
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 22px;
+  margin: 0 0 12px;
+}
+
+.highlight {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.label {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.value input {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #e5e7eb;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.result {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #0b1220;
+  border: 1px dashed #243146;
+}
+
+.money {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.pos { color: #22c55e; }
+.neg { color: #ef4444; }
+.muted { color: #9ca3af; }
+
+.row2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.mini {
+  background: #0d1424;
+  border: 1px solid #1f2a3a;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.mini .t {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.mini .v {
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* 平板以下 */
+@media (max-width: 768px) {
+  .card {
+    max-width: 95%;
+    padding: 16px;
+  }
+}
+
+/* 手機以下 */
+@media (max-width: 480px) {
+  body {
+    align-items: stretch; /* 讓卡片貼齊螢幕 */
+  }
+  .card {
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  .row {
+    grid-template-columns: 1fr; /* 單欄顯示，避免輸入框太小 */
+    gap: 8px;
+  }
+  h1 { font-size: clamp(16px, 4vw, 20px); }
+  .highlight { font-size: clamp(14px, 3.5vw, 18px); }
+  .money { font-size: clamp(18px, 5vw, 22px); }
+  .row2 {
+    grid-template-columns: repeat(2, 1fr); /* 手機縮成兩欄，避免太擠 */
+  }
+  .pos { color: green; }
+  .neg { color: red; }
+  .muted { color: gray; }
+}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="banner" id="hsiInfo">
+  HSI 載入中...
+  <span id="pnlSum" class="highlight">總和: $0.00</span>
+</div>
+
+  <!-- 卡片1 -->
+  <div class="container" id="cardContainer">
+  <div class="card">
+    <h1>健</h1>
+    <div id="livePrice1" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput1" type="number" value="7.050" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput1" type="number" value="10000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl1" class="muted">盈虧:</div></h1>
+      <div id="money1" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct1" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</br></div><div id="sellCost1" class="v muted">$0.00</div></div>
+      </div>
+      <br><div id="stime1"></div>
+    </div>
+  </div>
+  
+  <!-- 卡片2 -->
+    <div class="card">
+    <h1>小</h1>
+    <div id="livePrice2" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput2" type="number" value="35.6" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput2" type="number" value="5000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl2" class="muted">盈虧:</div></h1>
+      <div id="money2" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct2" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost2" class="v muted">$0.00</div></div>
+      </div>
+      <br><div id="stime2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 格式化金額
+const fmt = n => '$' + n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+
+// 取得輸入值（直接讀取輸入框，不用 cookie）
+function getInputs(prefix){
+  const buy = parseFloat(document.getElementById("buyInput"+prefix).value);
+  const qty = parseInt(document.getElementById("qtyInput"+prefix).value,10);
+  return {buy, qty};
+}
+
+// 計算盈虧
+function calc(curr,prefix){
+  const {buy, qty} = getInputs(prefix);
+
+  const elMoney=document.getElementById('money'+prefix),
+        elDiff=document.getElementById('diff'+prefix),
+        elPct=document.getElementById('pct'+prefix),
+        elBuyCommission=document.getElementById('buyCommission'+prefix),
+        elSellCommission=document.getElementById('sellCommission'+prefix),
+        elBuyCost=document.getElementById('buyCost'+prefix),
+        elSellCost=document.getElementById('sellCost'+prefix);
+
+  if(!isFinite(curr) || !isFinite(buy) || !isFinite(qty)){
+    [elMoney,elDiff,elPct,elBuyCommission,elSellCommission,elBuyCost,elSellCost]
+      .forEach(el=>el.textContent='$0.00');
+    elMoney.className='money muted';
+    return;
+  }
+
+  const diff=curr-buy,
+        pct=diff/buy*100,
+        buyTotal=buy*qty,
+        sellTotal=curr*qty,
+        buyCommission=Math.max(buyTotal*0.0040,100),
+        sellCommission=Math.max(sellTotal*0.0040,100),
+        buyCost=buyTotal+buyCommission,
+        sellCost=sellTotal-sellCommission,
+        profit=sellCost-buyCost,
+        profitPct=profit/buyCost*100;
+
+  elDiff.textContent=fmt(diff);
+  elPct.textContent=pct.toFixed(2)+'%';
+  elBuyCommission.textContent=fmt(buyCommission);
+  elSellCommission.textContent=fmt(sellCommission);
+  elBuyCost.textContent=fmt(buyCost);
+  elSellCost.textContent=fmt(sellCost);
+  elMoney.textContent=`${fmt(profit)} (${profitPct.toFixed(2)}%)`;
+  elMoney.className=profit>0?'money pos':profit<0?'money neg':'money muted';
+}
+
+// 顯示股票
+function renderStock(data,key,prefix){
+  const p=parseFloat(data['API_'+key].last),
+        chg=parseFloat(data['API_'+key].chng),
+        pct=parseFloat(data['API_'+key].pchng),
+        cls=chg>0?'pos':chg<0?'neg':'muted',
+        sym=chg>0?'🔼':chg<0?'🔽':'',
+        sign=chg>0?'+':'';
+  document.getElementById('livePrice'+prefix).innerHTML=
+    `現價：${p.toFixed(2)} <span class="${cls}">${sym} ${sign}${chg.toFixed(2)} (${sign}${pct.toFixed(2)}%)</span>`;
+  calc(p,prefix);
+  document.getElementById('stime'+prefix).textContent="最後更新時間: "+data['API_'+key].stimeNoformat;
+}
+
+// 計算 pnl1+pnl2 總和
+function updatePnLSum(){
+  let pnl1 = parseFloat(document.getElementById("money1").textContent.replace(/[$,]/g,"")) || 0;
+  let pnl2 = parseFloat(document.getElementById("money2").textContent.replace(/[$,]/g,"")) || 0;
+  let total = pnl1 + pnl2;
+
+  let formatted = fmt(total);
+  let cls = total > 0 ? "pos" : total < 0 ? "neg" : "muted";
+
+  return `<span class="${cls}">總和: ${formatted}</span>`;
+}
+
+// 抓取行情
+async function fetchPrices(){
+  try{
+    const res=await fetch("https://ellis.money18.workers.dev/");
+    const data=await res.json();
+    renderStock(data,'0241',1);
+    renderStock(data,'1810',2);
+
+    const hsiLast=parseFloat(data.API_HSI.last.toString().replace(/,/g,"")),
+          hsiChange=parseFloat(data.API_HSI.chng.toString().replace(/,/g,"")),
+          hsiPct=parseFloat(data.API_HSI.pchng.toString().replace(/,/g,"")),
+          hsiClass=hsiChange>0?"pos":hsiChange<0?"neg":"muted",
+          hsiSymbol=hsiChange>0?"🔼":hsiChange<0?"🔽":"",
+          hsiSign=hsiChange>0?"+":"";
+
+    document.getElementById("hsiInfo").innerHTML=
+      `恒生指數： ${hsiLast.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
+       <span class="${hsiClass}">${hsiSymbol} ${hsiSign}${hsiChange.toFixed(2)} (${hsiSign}${hsiPct.toFixed(2)}%)</span>
+       | ${updatePnLSum()}`;
+  }catch(e){
+    console.error(e);
+    ["livePrice1","livePrice2"].forEach(id=>document.getElementById(id).textContent="現價：無法取得");
+    document.getElementById("hsiInfo").textContent="恒生指數：無法取得";
+  }
+}
+
+// 初始化
+fetchPrices();
+setInterval(fetchPrices,1000);
+
+// 當使用者修改輸入時，直接重新計算
+[1,2].forEach(prefix=>{
+  document.getElementById("buyInput"+prefix).addEventListener("input", ()=>fetchPrices());
+  document.getElementById("qtyInput"+prefix).addEventListener("input", ()=>fetchPrices());
+});
+
+// 初始化時載入順序
+loadOrder();
+</script>
+</body>
