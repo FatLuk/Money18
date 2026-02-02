@@ -4,7 +4,7 @@ export default {
     const urls = [
       "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/2628",
       "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/0241",
-      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/1810",
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/1347",
       "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/HSI"
     ];
 
@@ -19,7 +19,7 @@ export default {
       const result = {
         API_2628: data[0],
         API_0241: data[1],
-        API_1810: data[2],
+        API_1347: data[2],
         API_HSI: data[3]
       };
 
