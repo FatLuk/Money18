@@ -188,10 +188,10 @@ h1 {
   
   <!-- 卡片2 -->
     <div class="card">
-    <h1>小</h1>
+    <h1>華</h1>
     <div id="livePrice2" class="highlight">載入中...</div>
-    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput2" type="number" value="35.6" step="0.01"></div></div>
-    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput2" type="number" value="5000" step="1"></div></div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput2" type="number" value="104" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput2" type="number" value="2000" step="1"></div></div>
     <div class="result">
       <h1><div id="pnl2" class="muted">盈虧:</div></h1>
       <div id="money2" class="money muted">$0.00</div>
@@ -291,7 +291,7 @@ async function fetchPrices(){
     const res=await fetch("https://ellis.money18.workers.dev/");
     const data=await res.json();
     renderStock(data,'0241',1);
-    renderStock(data,'1810',2);
+    renderStock(data,'1347',2);
 
     const hsiLast=parseFloat(data.API_HSI.last.toString().replace(/,/g,"")),
           hsiChange=parseFloat(data.API_HSI.chng.toString().replace(/,/g,"")),
