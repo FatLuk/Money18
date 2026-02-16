@@ -164,13 +164,13 @@ h1 {
   <span id="pnlSum" class="highlight">總和: $0.00</span>
 </div>
 
-  <!-- 卡片1 小米集團－W (1810.HK) -->
+  <!-- 卡片1 華虹半導體(1347.HK) -->
   <div class="container" id="cardContainer">
   <div class="card">
-    <h1>小米集團－W (1810.HK)</h1>
+    <h1>華</h1>
     <div id="livePrice1" class="highlight">載入中...</div>
-    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput1" type="number" value="35.6" step="0.01"></div></div>
-    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput1" type="number" value="5000" step="1"></div></div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput1" type="number" value="97" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput1" type="number" value="2000" step="1"></div></div>
     <div class="result">
       <h1><div id="pnl1" class="muted">盈虧:</div></h1>
       <div id="money1" class="money muted">$0.00</div>
@@ -290,7 +290,7 @@ async function fetchPrices(){
   try{
     const res=await fetch("https://eric.money18.workers.dev/");
     const data=await res.json();
-    renderStock(data,'1810',1); // 小米集團－W
+    renderStock(data,'1347',1); // 華虹半導體(1347.HK)
     renderStock(data,'2628',2); // 中國人壽
 
     const hsiLast=parseFloat(data.API_HSI.last.toString().replace(/,/g,"")),
