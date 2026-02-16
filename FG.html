@@ -180,12 +180,33 @@ h1 {
     </div>
   </div>
 
-  <!-- 卡片2 阿里巴巴 -->
+  <!-- 卡片2 阿里巴巴
   <div class="card">
     <h1>阿里巴巴－W (9988.HK)</h1>
     <div id="livePrice2" class="highlight">載入中...</div>
     <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput2" type="number" value="160" step="0.01"></div></div>
     <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput2" type="number" value="7000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl2" class="muted">盈虧:</div></h1>
+      <div id="money2" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct2" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost2" class="v muted">$0.00</div></div>
+      </div>
+      <br><div id="stime2"></div>
+    </div>
+  </div> -->
+  
+    <!-- 卡片2 華虹半導體(1347.HK) -->
+  <div class="card">
+    <h1>華虹半導體(1347.HK)</h1>
+    <div id="livePrice2" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput2" type="number" value="97" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput2" type="number" value="2000" step="1"></div></div>
     <div class="result">
       <h1><div id="pnl2" class="muted">盈虧:</div></h1>
       <div id="money2" class="money muted">$0.00</div>
@@ -226,8 +247,8 @@ h1 {
   <div class="card">
     <h1>中國人壽(2628.HK)</h1>
     <div id="livePrice4" class="highlight">載入中...</div>
-    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput4" type="number" value="0" step="0.01"></div></div>
-    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput4" type="number" value="0" step="1"></div></div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput4" type="number" value="35.1" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput4" type="number" value="5000" step="1"></div></div>
     <div class="result">
       <h1><div id="pnl4" class="muted">盈虧:</div></h1>
       <div id="money4" class="money muted">$0.00</div>
@@ -246,8 +267,8 @@ h1 {
   <div class="card">
   <h1>小米集團(1810.HK)</h1>
   <div id="livePrice5" class="highlight">載入中...</div>
-  <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput5" type="number" value="0" step="0.01"></div></div>
-  <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput5" type="number" value="0" step="1"></div></div>
+  <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput5" type="number" value="35.6" step="0.01"></div></div>
+  <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput5" type="number" value="5000" step="1"></div></div>
   <div class="result">
     <h1><div id="pnl5" class="muted">盈虧:</div></h1>
     <div id="money5" class="money muted">$0.00</div>
@@ -353,10 +374,11 @@ function renderStock(data,key,prefix){
 // 抓取行情
 async function fetchPrices(){
   try{
-    const res=await fetch("https://all.money18.workers.dev/");
+    const res=await fetch("https://mf.money18.workers.dev/");
     const data=await res.json();
     renderStock(data,'0388',1); // 香港交易所
-    renderStock(data,'9988',2); // 阿里巴巴
+	renderStock(data,'1347',2); // 小米集團
+    //renderStock(data,'9988',2); // 阿里巴巴
     renderStock(data,'2318',3); // 中國平安
     renderStock(data,'2628',4); // 中國人壽
     renderStock(data,'1810',5); // 小米集團
