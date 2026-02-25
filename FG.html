@@ -175,6 +175,8 @@ h1 {
         <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission1" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost1" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">賣出淨額(含佣金)</br></div><div id="sellCost1" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high1" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low1" class="v muted">$0.00</div></div>
       </div>
       <br><div id="stime1"></div>
     </div>
@@ -217,6 +219,8 @@ h1 {
         <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission2" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost2" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost2" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high2" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low2" class="v muted">$0.00</div></div>
       </div>
       <br><div id="stime2"></div>
     </div>
@@ -238,6 +242,8 @@ h1 {
         <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission3" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost3" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost3" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high3" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low3" class="v muted">$0.00</div></div>
       </div>
       <br><div id="stime3"></div>
     </div>
@@ -259,6 +265,8 @@ h1 {
         <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission4" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost4" class="v muted">$0.00</div></div>
         <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost4" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high4" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low4" class="v muted">$0.00</div></div>
       </div>
       <br><div id="stime4"></div>
     </div>
@@ -279,6 +287,8 @@ h1 {
       <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission5" class="v muted">$0.00</div></div>
       <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost5" class="v muted">$0.00</div></div>
       <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost5" class="v muted">$0.00</div></div>
+	  <div class="mini"><div class="t">最高價</div><div id="high5" class="v muted">$0.00</div></div>
+	<div class="mini"><div class="t">最低價</div><div id="low5" class="v muted">$0.00</div></div>
     </div>
     <br><div id="stime5"></div>
   </div>
@@ -362,11 +372,19 @@ function renderStock(data,key,prefix){
   const p=parseFloat(data['API_'+key].last),
         chg=parseFloat(data['API_'+key].chng),
         pct=parseFloat(data['API_'+key].pchng),
+        high=parseFloat(data['API_'+key].high),
+        low=parseFloat(data['API_'+key].low),
         cls=chg>0?'pos':chg<0?'neg':'muted',
         sym=chg>0?'🔼':chg<0?'🔽':'',
         sign=chg>0?'+':'';
+
   document.getElementById('livePrice'+prefix).innerHTML=
     `現價：${p.toFixed(2)} <span class="${cls}">${sym} ${sign}${chg.toFixed(2)} (${sign}${pct.toFixed(2)}%)</span>`;
+
+  // 更新高低價
+  document.getElementById('high'+prefix).textContent = fmt(high);
+  document.getElementById('low'+prefix).textContent = fmt(low);
+
   calc(p,prefix);
   document.getElementById('stime'+prefix).textContent="最後更新時間: "+data['API_'+key].stimeNoformat;
 }
