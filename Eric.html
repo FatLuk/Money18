@@ -282,7 +282,6 @@ function renderStock(data,key,prefix){
   document.getElementById('low'+prefix).textContent = fmt(low);
 
   calc(p,prefix);
-  document.getElementById('stime'+prefix).textContent="最後更新時間: "+data['API_'+key].stimeNoformat;
 }
 
 // 計算 pnl1+pnl2 總和

@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/x-icon" href="https://www.hkex.com.hk/assets/images/favicon.png">
   <title>賺錢麼?</title>
   <style>
 body {
@@ -386,7 +385,6 @@ function renderStock(data,key,prefix){
   document.getElementById('low'+prefix).textContent = fmt(low);
 
   calc(p,prefix);
-  document.getElementById('stime'+prefix).textContent="最後更新時間: "+data['API_'+key].stimeNoformat;
 }
 
 // 抓取行情
