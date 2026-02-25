@@ -18,3 +18,5 @@
 [25-2-2026]
 
 (FG Eric Ellis)加入最高價、最低價, 移除代碼loadOrder();「卡片排序」功能
+刪除function renderStock中的最後更新時間,保持整潔
+document.getElementById('stime'+prefix).textContent="最後更新時間: "+data['API_'+key].stimeNoformat;
