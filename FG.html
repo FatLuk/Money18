@@ -156,9 +156,9 @@ h1 {
 </head>
 <body>
 <div class="container">
-  <div class="banner" id="hsiInfo">HSI 載入中...</div>
+  <div class="banner" id="hsiInfo">恒生指數 載入中...</div>
 
-  <!-- 卡片1 香港交易所 -->
+  <!-- 股票1 香港交易所(0388.HK) -->
   <div class="card">
     <h1>香港交易所(0388.HK)</h1>
     <div id="livePrice1" class="highlight">載入中...</div>
@@ -181,7 +181,7 @@ h1 {
     </div>
   </div>
 
-  <!-- 卡片2 阿里巴巴
+  <!-- 股票2 阿里巴巴－W (9988.HK)
   <div class="card">
     <h1>阿里巴巴－W (9988.HK)</h1>
     <div id="livePrice2" class="highlight">載入中...</div>
@@ -202,7 +202,7 @@ h1 {
     </div>
   </div> -->
   
-    <!-- 卡片2 華虹半導體(1347.HK) -->
+    <!-- 股票2 華虹半導體(1347.HK) -->
   <div class="card">
     <h1>華虹半導體(1347.HK)</h1>
     <div id="livePrice2" class="highlight">載入中...</div>
@@ -225,7 +225,7 @@ h1 {
     </div>
   </div>
 
-  <!-- 卡片3 中國平安 -->
+  <!-- 股票3 中國平安(2318.HK) -->
   <div class="card">
     <h1>中國平安(2318.HK)</h1>
     <div id="livePrice3" class="highlight">載入中...</div>
@@ -248,7 +248,7 @@ h1 {
     </div>
   </div>
 
-  <!-- 卡片4 中國人壽 -->
+  <!-- 股票4 中國人壽(2628.HK) -->
   <div class="card">
     <h1>中國人壽(2628.HK)</h1>
     <div id="livePrice4" class="highlight">載入中...</div>
@@ -270,7 +270,7 @@ h1 {
       <br><div id="stime4"></div>
     </div>
   </div>
-   <!-- 卡片5 小米集團 -->
+   <!-- 股票5 小米集團－W (1810.HK) -->
   <div class="card">
   <h1>小米集團(1810.HK)</h1>
   <div id="livePrice5" class="highlight">載入中...</div>
@@ -392,12 +392,12 @@ async function fetchPrices(){
   try{
     const res=await fetch("https://mf.money18.workers.dev/");
     const data=await res.json();
-    renderStock(data,'0388',1); // 香港交易所
-	renderStock(data,'1347',2); // 小米集團
-    //renderStock(data,'9988',2); // 阿里巴巴
-    renderStock(data,'2318',3); // 中國平安
-    renderStock(data,'2628',4); // 中國人壽
-    renderStock(data,'1810',5); // 小米集團
+    renderStock(data,'0388',1); // 香港交易所(0388.HK)
+	renderStock(data,'1347',2); // 小米集團－W (1810.HK)
+    //renderStock(data,'9988',2); // 阿里巴巴－W (9988.HK)
+    renderStock(data,'2318',3); // 中國平安(2318.HK)
+    renderStock(data,'2628',4); // 中國人壽(2628.HK)
+    renderStock(data,'1810',5); // 小米集團－W (1810.HK)
 
     const hsiLast=parseFloat(data.API_HSI.last.toString().replace(/,/g,"")),
           hsiChange=parseFloat(data.API_HSI.chng.toString().replace(/,/g,"")),
