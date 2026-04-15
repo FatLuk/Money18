@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>賺錢麼?</title>
+  <style>
+body {
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, "Microsoft JhengHei", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.banner {
+  width: 100%;
+  background: #1f2937;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid #374151;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+.card {
+  flex: 1 1 100%;
+  width: 100%;
+  max-width: 560px;   /* 桌機最大寬度 */
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 22px;
+  margin: 0 0 12px;
+}
+
+.highlight {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.label {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.value input {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #e5e7eb;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.result {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #0b1220;
+  border: 1px dashed #243146;
+}
+
+.money {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.pos { color: #22c55e; }
+.neg { color: #ef4444; }
+.muted { color: #9ca3af; }
+
+.row2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.mini {
+  background: #0d1424;
+  border: 1px solid #1f2a3a;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.mini .t {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.mini .v {
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* 平板以下 */
+@media (max-width: 768px) {
+  .card {
+    max-width: 95%;
+    padding: 16px;
+  }
+}
+
+/* 手機以下 */
+@media (max-width: 480px) {
+  body {
+    align-items: stretch; /* 讓卡片貼齊螢幕 */
+  }
+  .card {
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  .row {
+    grid-template-columns: 1fr; /* 單欄顯示，避免輸入框太小 */
+    gap: 8px;
+  }
+  h1 { font-size: clamp(16px, 4vw, 20px); }
+  .highlight { font-size: clamp(14px, 3.5vw, 18px); }
+  .money { font-size: clamp(18px, 5vw, 22px); }
+  .row2 {
+    grid-template-columns: repeat(2, 1fr); /* 手機縮成兩欄，避免太擠 */
+  }
+}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="banner" id="hsiInfo">恒生指數 載入中...</div>
+  
+  <div class="card">
+  <h1>騰訊控股(0700.HK)</h1>
+  <div id="livePrice5" class="highlight">載入中...</div>
+  <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput5" type="number" value="506.5" step="0.01"></div></div>
+  <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput5" type="number" value="10000" step="1"></div></div>
+  <div class="result">
+    <h1><div id="pnl5" class="muted">盈虧:</div></h1>
+    <div id="money5" class="money muted">$0.00</div>
+    <div class="row2">
+      <div class="mini"><div class="t">每股差額</div><div id="diff5" class="v muted">$0.00</div></div>
+      <div class="mini"><div class="t">回報率</div><div id="pct5" class="v muted">0.00%</div></div>
+      <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission5" class="v muted">$0.00</div></div>
+      <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission5" class="v muted">$0.00</div></div>
+      <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost5" class="v muted">$0.00</div></div>
+      <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost5" class="v muted">$0.00</div></div>
+	  <div class="mini"><div class="t">最高價</div><div id="high5" class="v muted">$0.00</div></div>
+	<div class="mini"><div class="t">最低價</div><div id="low5" class="v muted">$0.00</div></div>
+    </div>
+  </div>
+</div>
+
+  <div class="card">
+    <h1>阿里健康(0241.HK)</h1>
+    <div id="livePrice7" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput7" type="number" value="4.69" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput7" type="number" value="50000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl7" class="muted">盈虧:</div></h1>
+      <div id="money7" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff7" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct7" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission7" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission7" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost7" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost7" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high7" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low7" class="v muted">$0.00</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h1>華虹半導體(1347.HK)</h1>
+    <div id="livePrice2" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput2" type="number" value="104" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput2" type="number" value="2000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl2" class="muted">盈虧:</div></h1>
+      <div id="money2" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct2" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost2" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost2" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high2" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low2" class="v muted">$0.00</div></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h1>小米集團－W (1810.HK)</h1>
+    <div id="livePrice6" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput6" type="number" value="31.48" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput6" type="number" value="3000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl6" class="muted">盈虧:</div></h1>
+      <div id="money6" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff6" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct6" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission6" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission6" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost6" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost6" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high6" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low6" class="v muted">$0.00</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h1>香港交易所(0388.HK)</h1>
+    <div id="livePrice1" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput1" type="number" value="400" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput1" type="number" value="13000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl1" class="muted">盈虧:</div></h1>
+      <div id="money1" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct1" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost1" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</br></div><div id="sellCost1" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high1" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low1" class="v muted">$0.00</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h1>中國平安(2318.HK)</h1>
+    <div id="livePrice3" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput3" type="number" value="36.4" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput3" type="number" value="7000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl3" class="muted">盈虧:</div></h1>
+      <div id="money3" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff3" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct3" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission3" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission3" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost3" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost3" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high3" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low3" class="v muted">$0.00</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h1>中國人壽(2628.HK)</h1>
+    <div id="livePrice4" class="highlight">載入中...</div>
+    <div class="row"><div class="label">買入價</div><div class="value"><input id="buyInput4" type="number" value="35.1" step="0.01"></div></div>
+    <div class="row"><div class="label">股數</div><div class="value"><input id="qtyInput4" type="number" value="5000" step="1"></div></div>
+    <div class="result">
+      <h1><div id="pnl4" class="muted">盈虧:</div></h1>
+      <div id="money4" class="money muted">$0.00</div>
+      <div class="row2">
+        <div class="mini"><div class="t">每股差額</div><div id="diff4" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">回報率</div><div id="pct4" class="v muted">0.00%</div></div>
+        <div class="mini"><div class="t">買入佣金(0.40%)</div><div id="buyCommission4" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出佣金(0.40%)</div><div id="sellCommission4" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">買入成本(含佣金)</div><div id="buyCost4" class="v muted">$0.00</div></div>
+        <div class="mini"><div class="t">賣出淨額(含佣金)</div><div id="sellCost4" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最高價</div><div id="high4" class="v muted">$0.00</div></div>
+		<div class="mini"><div class="t">最低價</div><div id="low4" class="v muted">$0.00</div></div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<script>
+// 格式化金額
+const fmt = n => '$' + n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+
+// 讀取 cookie
+function getCookie(name){
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
+// 寫入 cookie (保存 10 年)
+function setCookie(name,value){
+  const d = new Date();
+  d.setTime(d.getTime() + (10*365*24*60*60*1000)); // 10 年
+  document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/";
+}
+
+// 初始化輸入框值
+function initInputs(prefix){
+  const buyVal = getCookie("buy"+prefix);
+  const qtyVal = getCookie("qty"+prefix);
+  if(buyVal) document.getElementById("buyInput"+prefix).value = buyVal;
+  if(qtyVal) document.getElementById("qtyInput"+prefix).value = qtyVal;
+}
+
+// 取得輸入值
+function getInputs(prefix){
+  const buy = parseFloat(document.getElementById("buyInput"+prefix).value);
+  const qty = parseInt(document.getElementById("qtyInput"+prefix).value,10);
+  return {buy, qty};
+}
+
+// 計算盈虧
+function calc(curr,prefix){
+  const {buy, qty} = getInputs(prefix);
+
+  const elMoney=document.getElementById('money'+prefix),
+        elDiff=document.getElementById('diff'+prefix),
+        elPct=document.getElementById('pct'+prefix),
+        elBuyCommission=document.getElementById('buyCommission'+prefix),
+        elSellCommission=document.getElementById('sellCommission'+prefix),
+        elBuyCost=document.getElementById('buyCost'+prefix),
+        elSellCost=document.getElementById('sellCost'+prefix);
+
+  if(!isFinite(curr) || !isFinite(buy) || !isFinite(qty)){
+    [elMoney,elDiff,elPct,elBuyCommission,elSellCommission,elBuyCost,elSellCost]
+      .forEach(el=>el.textContent='$0.00');
+    elMoney.className='money muted';
+    return;
+  }
+
+  const diff=curr-buy,
+        pct=diff/buy*100,
+        buyTotal=buy*qty,
+        sellTotal=curr*qty,
+        buyCommission=Math.max(buyTotal*0.0040,100),
+        sellCommission=Math.max(sellTotal*0.0040,100),
+        buyCost=buyTotal+buyCommission,
+        sellCost=sellTotal-sellCommission,
+        profit=sellCost-buyCost,
+        profitPct=profit/buyCost*100;
+
+  elDiff.textContent=fmt(diff);
+  elPct.textContent=pct.toFixed(2)+'%';
+  elBuyCommission.textContent=fmt(buyCommission);
+  elSellCommission.textContent=fmt(sellCommission);
+  elBuyCost.textContent=fmt(buyCost);
+  elSellCost.textContent=fmt(sellCost);
+  elMoney.textContent=`${fmt(profit)} (${profitPct.toFixed(2)}%)`;
+  elMoney.className=profit>0?'money pos':profit<0?'money neg':'money muted';
+}
+
+// 顯示股票
+function renderStock(data,key,prefix){
+  const p=parseFloat(data['API_'+key].last),
+        chg=parseFloat(data['API_'+key].chng),
+        pct=parseFloat(data['API_'+key].pchng),
+        high=parseFloat(data['API_'+key].high),
+        low=parseFloat(data['API_'+key].low),
+        cls=chg>0?'pos':chg<0?'neg':'muted',
+        sym=chg>0?'🔼':chg<0?'🔽':'',
+        sign=chg>0?'+':'';
+
+  document.getElementById('livePrice'+prefix).innerHTML=
+    `現價：${p.toFixed(2)} <span class="${cls}">${sym} ${sign}${chg.toFixed(2)} (${sign}${pct.toFixed(2)}%)</span>`;
+
+  // 更新高低價
+  document.getElementById('high'+prefix).textContent = fmt(high);
+  document.getElementById('low'+prefix).textContent = fmt(low);
+
+  calc(p,prefix);
+}
+
+// 抓取行情
+async function fetchPrices(){
+  try{
+    const res=await fetch("https://mf.money18.workers.dev/");
+    const data=await res.json();
+    renderStock(data,'0388',1); // 香港交易所(0388.HK)
+	renderStock(data,'1347',2); // 華虹半導體(1347.HK)
+    renderStock(data,'2318',3); // 中國平安(2318.HK)
+    renderStock(data,'2628',4); // 中國人壽(2628.HK)
+    renderStock(data,'0700',5); // 阿里巴巴－W (9988.HK)
+	renderStock(data,'1810',6); // 小米集團－W (1810.HK)
+	renderStock(data,'0241',7); // 阿里健康(0241.HK)
+
+    const hsiLast=parseFloat(data.API_HSI.last.toString().replace(/,/g,"")),
+          hsiChange=parseFloat(data.API_HSI.chng.toString().replace(/,/g,"")),
+          hsiPct=parseFloat(data.API_HSI.pchng.toString().replace(/,/g,"")),
+          hsiClass=hsiChange>0?"pos":hsiChange<0?"neg":"muted",
+          hsiSymbol=hsiChange>0?"🔼":hsiChange<0?"🔽":"",
+          hsiSign=hsiChange>0?"+":"";
+
+    document.getElementById("hsiInfo").innerHTML=
+      `恒生指數： ${hsiLast.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
+       <span class="${hsiClass}">${hsiSymbol} ${hsiSign}${hsiChange.toFixed(2)} (${hsiSign}${hsiPct.toFixed(2)}%)</span>`;
+  }catch(e){
+    console.error(e);
+    ["livePrice1","livePrice2","livePrice3","livePrice4","livePrice5"].forEach(id=>document.getElementById(id).textContent="現價：無法取得");
+    document.getElementById("hsiInfo").textContent="恒生指數：無法取得";
+  }
+}
+
+// 初始化所有卡片
+[1,2,3,4,5,6,7].forEach(initInputs);
+fetchPrices();
+setInterval(fetchPrices,1000);
+
+// 當使用者修改輸入時，存入 cookie 並重新計算
+[1,2,3,4,5,6,7].forEach(prefix=>{
+  document.getElementById("buyInput"+prefix).addEventListener("input", e=>{
+    setCookie("buy"+prefix, e.target.value);
+    fetchPrices();
+  });
+  document.getElementById("qtyInput"+prefix).addEventListener("input", e=>{
+    setCookie("qty"+prefix, e.target.value);
+    fetchPrices();
+  });
+});
+</script>
+</body>

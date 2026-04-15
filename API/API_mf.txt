@@ -1,0 +1,65 @@
+export default {
+  async fetch(request) {
+    const urls = [
+      //恒生指數
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/HSI",
+      //香港交易所(0388.HK)
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/0388",
+      //阿里巴巴－W (9988.HK)
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/9988",
+      //中國平安(2318.HK)
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/2318",
+      //中國人壽(2628.HK)
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/2628",
+      //小米集團－W (1810.HK)
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/1810",
+      //華虹半導體(1347.HK)
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/1347",
+      //阿里健康(0241.HK)
+      "https://www.citiwarrants.com/tc/data/json/json_realtimedata/code/0241",
+    ];
+
+    // 處理 OPTIONS 預檢請求
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
+      });
+    }
+
+    try {
+      // 並行請求 API
+      const responses = await Promise.allSettled(urls.map(url => fetch(url)));
+
+      const result = {};
+      for (let i = 0; i < urls.length; i++) {
+        const code = urls[i].split("/").pop();
+        if (responses[i].status === "fulfilled") {
+          try {
+            result[`API_${code}`] = await responses[i].value.json();
+          } catch {
+            result[`API_${code}`] = { error: "Invalid JSON" };
+          }
+        } else {
+          result[`API_${code}`] = { error: responses[i].reason.message };
+        }
+      }
+
+      return new Response(JSON.stringify(result), {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+        },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  },
+};
